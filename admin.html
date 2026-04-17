@@ -323,8 +323,8 @@
         .upload-card {
             background: var(--elevated);
             border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 2rem;
+            border-radius: 8px;
+            padding: 1.5rem;
             position: relative;
             transition: all 0.3s;
         }
@@ -332,98 +332,227 @@
         .upload-card:hover {
             border-color: rgba(201,169,97,0.2);
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .slot-label {
+        .upload-card::before {
+            content: attr(data-slot);
             position: absolute;
-            top: -12px;
+            top: -10px;
             left: 20px;
             background: var(--terminal-bg);
-            padding: 0.3rem 1rem;
-            border: 1px solid rgba(201,169,97,0.3);
-            border-radius: 20px;
+            padding: 0 10px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
             color: var(--gold);
+            border: 1px solid rgba(201,169,97,0.2);
+            border-radius: 4px;
         }
 
-        /* Fixed Upload Area */
-        .upload-area {
-            border: 2px dashed rgba(255,255,255,0.2);
-            border-radius: 8px;
-            height: 220px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .drop-zone {
+            border: 2px dashed rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
             cursor: pointer;
             transition: all 0.3s;
-            margin-bottom: 1rem;
             position: relative;
             overflow: hidden;
-            background: rgba(0,0,0,0.2);
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
-        .upload-area:hover {
+        .drop-zone:hover {
             border-color: var(--gold);
-            background: rgba(201,169,97,0.05);
+            background: rgba(201,169,97,0.02);
         }
 
-        .upload-area.has-image {
+        .drop-zone.has-image {
             border-style: solid;
             border-color: var(--green);
-            border-width: 2px;
+            padding: 0;
         }
 
-        .upload-area input[type="file"] {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-            z-index: 10;
+        .drop-zone input {
+            display: none;
         }
 
-        .upload-placeholder {
-            text-align: center;
-            pointer-events: none;
-            z-index: 1;
+        .drop-icon {
+            width: 40px;
+            height: 40px;
+            stroke: var(--gray);
+            fill: none;
+            stroke-width: 1.5;
         }
 
-        .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.5;
-        }
-
-        .upload-text {
+        .drop-text {
+            font-size: 0.85rem;
             color: var(--gray);
-            font-size: 0.9rem;
         }
 
-        .upload-hint {
-            color: var(--gray-dark);
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
-        }
-
-        .image-preview {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .preview-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none;
-            z-index: 5;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
-        .image-preview.active {
+        .upload-input, .upload-textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.8rem;
+            color: white;
+            margin-bottom: 0.8rem;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .upload-textarea {
+            resize: vertical;
+            min-height: 60px;
+            font-family: inherit;
+        }
+
+        .upload-input:focus, .upload-textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .schedule-section {
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .schedule-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .schedule-toggle input {
+            accent-color: var(--gold);
+        }
+
+        .schedule-datetime {
+            display: none;
+        }
+
+        .schedule-datetime.active {
             display: block;
         }
 
-        .remove-image {
+        .upload-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(201,169,97,0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+
+        .upload-btn:hover:not(:disabled) {
+            background: var(--gold);
+            color: var(--deep-black);
+        }
+
+        .upload-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Items List */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .item-card {
+            background: var(--elevated);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+
+        .item-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .item-info {
+            padding: 1rem;
+        }
+
+        .item-title {
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .item-price {
+            color: var(--gold);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .item-desc {
+            color: var(--gray);
+            font-size: 0.8rem;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .item-expiry {
+            color: var(--red);
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .item-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+
+        .delete-btn {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -432,143 +561,13 @@
             background: var(--red);
             border: none;
             color: white;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 20;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: transform 0.2s;
-        }
-
-        .remove-image:hover {
-            transform: scale(1.1);
-        }
-
-        .upload-area.has-image .remove-image {
-            display: flex;
-        }
-
-        .upload-area.has-image .upload-placeholder {
-            opacity: 0;
-        }
-
-        .upload-input {
-            width: 100%;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 1rem;
-            color: white;
-            margin-bottom: 1rem;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.95rem;
-        }
-
-        .upload-input:focus {
-            outline: none;
-            border-color: var(--gold);
-        }
-
-        .upload-btn {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(201,169,97,0.1);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            cursor: pointer;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            border-radius: 6px;
-            font-weight: 600;
-        }
-
-        .upload-btn:hover:not(:disabled) {
-            background: var(--gold);
-            color: var(--deep-black);
-            box-shadow: 0 5px 20px rgba(201,169,97,0.3);
-        }
-
-        .upload-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            border-color: var(--gray);
-            color: var(--gray);
-        }
-
-        .upload-btn.success {
-            background: var(--green);
-            border-color: var(--green);
-            color: var(--deep-black);
-        }
-
-        /* Items List */
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .item-card {
-            background: var(--elevated);
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-            position: relative;
-            transition: transform 0.3s;
-        }
-
-        .item-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-        }
-
-        .item-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .item-info {
-            padding: 1.2rem;
-        }
-
-        .item-title {
-            color: white;
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-            font-weight: 500;
-        }
-
-        .item-date {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--gray);
-        }
-
-        .delete-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 35px;
-            height: 35px;
-            background: var(--red);
-            border: none;
-            color: white;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             opacity: 0;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            z-index: 10;
         }
 
         .item-card:hover .delete-btn {
@@ -577,26 +576,20 @@
 
         .delete-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(255,68,68,0.5);
+            box-shadow: 0 0 20px var(--red);
         }
 
         /* Reviews */
         .review-item {
             background: var(--elevated);
             border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 1.5rem;
             margin-bottom: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: start;
             gap: 2rem;
-            transition: all 0.3s;
-        }
-
-        .review-item:hover {
-            border-color: rgba(255,255,255,0.1);
-            transform: translateX(5px);
         }
 
         .review-content h4 {
@@ -609,33 +602,30 @@
             color: var(--gold);
             margin-bottom: 0.5rem;
             font-size: 0.9rem;
-            letter-spacing: 2px;
         }
 
         .review-text {
             color: #aaa;
-            line-height: 1.6;
-            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
         .review-meta {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
             color: var(--gray);
-            margin-top: 0.8rem;
+            margin-top: 0.5rem;
         }
 
         .del-review-btn {
             background: transparent;
             border: 1px solid var(--red);
             color: var(--red);
-            padding: 0.6rem 1.2rem;
+            padding: 0.5rem 1rem;
             cursor: pointer;
             font-size: 0.8rem;
             border-radius: 4px;
             transition: all 0.3s;
             white-space: nowrap;
-            font-family: inherit;
         }
 
         .del-review-btn:hover {
@@ -651,7 +641,7 @@
             border: 1px solid var(--green);
             color: var(--green);
             padding: 1rem 2rem;
-            border-radius: 8px;
+            border-radius: 6px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
             display: none;
@@ -665,11 +655,25 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray);
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            accent-color: var(--gold);
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
             .upload-grid { grid-template-columns: 1fr; }
             .dash-meta { gap: 1rem; }
             .tabs { overflow-x: auto; }
-            .delete-btn { opacity: 1; }
+            .input-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -740,13 +744,12 @@
             { username: '07012305403', password: 'SRW1' }
         ];
 
-        // Store temporary file data
-        const uploadData = {};
-
         window.onload = () => {
             if (sessionStorage.getItem('suxy_auth') === 'true') {
                 showDashboard();
             }
+            // Check for expired items on load
+            checkExpiredItems();
         };
 
         function handleLogin(e) {
@@ -790,6 +793,21 @@
             if (tab === 'reviews') loadReviews();
         }
 
+        function checkExpiredItems() {
+            let items = JSON.parse(localStorage.getItem('suxy_items') || '[]');
+            const now = new Date().getTime();
+            const validItems = items.filter(item => {
+                if (item.deleteAt) {
+                    return new Date(item.deleteAt).getTime() > now;
+                }
+                return true;
+            });
+            if (validItems.length !== items.length) {
+                localStorage.setItem('suxy_items', JSON.stringify(validItems));
+                console.log('Expired items cleaned up');
+            }
+        }
+
         function initUploadSlots() {
             const grid = document.getElementById('uploadGrid');
             grid.innerHTML = '';
@@ -797,224 +815,169 @@
             for (let i = 1; i <= 10; i++) {
                 const card = document.createElement('div');
                 card.className = 'upload-card';
+                card.setAttribute('data-slot', `Slot ${i}`);
                 card.innerHTML = `
-                    <div class="slot-label">Slot ${i}</div>
-                    <div class="upload-area" id="area${i}" onclick="triggerFileInput(${i})">
-                        <input type="file" 
-                               id="file${i}" 
-                               accept="image/*" 
-                               onchange="handleFileSelect(${i}, this)"
-                               onclick="event.stopPropagation()">
-                        <div class="upload-placeholder" id="placeholder${i}">
-                            <div class="upload-icon">📷</div>
-                            <div class="upload-text">Click to select image</div>
-                            <div class="upload-hint">or drag and drop</div>
-                        </div>
-                        <img id="preview${i}" class="image-preview" alt="Preview">
-                        <button type="button" 
-                                class="remove-image" 
-                                id="remove${i}" 
-                                onclick="removeImage(${i}, event)"
-                                title="Remove image">×</button>
+                    <div class="drop-zone" onclick="document.getElementById('file${i}').click()" id="drop${i}">
+                        <input type="file" id="file${i}" accept="image/*" onchange="handleFile(${i})">
+                        <svg class="drop-icon" viewBox="0 0 24 24">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <span class="drop-text" id="text${i}">Drop image or click to browse</span>
+                        <img id="preview${i}" class="preview-img" style="display: none;">
                     </div>
-                    <input type="text" 
-                           id="name${i}" 
-                           class="upload-input" 
-                           placeholder="Enter item name..." 
-                           oninput="validateForm(${i})">
-                    <button class="upload-btn" 
-                            id="btn${i}" 
-                            onclick="uploadItem(${i})" 
-                            disabled>Upload to Store</button>
+                    <input type="text" id="name${i}" class="upload-input" placeholder="Product name..." oninput="validateSlot(${i})">
+                    <div class="input-row">
+                        <input type="number" id="price${i}" class="upload-input" placeholder="Price (₦)..." oninput="validateSlot(${i})">
+                        <input type="text" id="desc${i}" class="upload-input" placeholder="Short description..." oninput="validateSlot(${i})">
+                    </div>
+                    <div class="schedule-section">
+                        <label class="schedule-toggle">
+                            <input type="checkbox" id="scheduleCheck${i}" onchange="toggleSchedule(${i})">
+                            <span>Schedule auto-delete</span>
+                        </label>
+                        <div class="schedule-datetime" id="scheduleBox${i}">
+                            <input type="datetime-local" id="deleteAt${i}" class="upload-input" oninput="validateSlot(${i})">
+                        </div>
+                    </div>
+                    <button class="upload-btn" id="btn${i}" onclick="uploadItem(${i})" disabled>Upload to Store</button>
                 `;
                 grid.appendChild(card);
-                
-                // Initialize empty data slot
-                uploadData[i] = { file: null, name: '' };
             }
         }
 
-        function triggerFileInput(slot) {
-            // Only trigger if we don't already have an image
-            if (!uploadData[slot].file) {
-                document.getElementById(`file${slot}`).click();
-            }
-        }
-
-        function handleFileSelect(slot, input) {
-            const file = input.files[0];
-            if (!file) return;
-
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                showToast('Error: Please select an image file');
-                input.value = '';
-                return;
-            }
-
-            // Validate file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                showToast('Error: Image must be less than 5MB');
-                input.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const preview = document.getElementById(`preview${slot}`);
-                const area = document.getElementById(`area${slot}`);
-                
-                preview.src = e.target.result;
-                preview.classList.add('active');
-                area.classList.add('has-image');
-                
-                // Store data
-                uploadData[slot].file = e.target.result;
-                uploadData[slot].fileName = file.name;
-                
-                validateForm(slot);
-                showToast('Image selected successfully');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function removeImage(slot, event) {
-            event.stopPropagation();
+        function toggleSchedule(slot) {
+            const checkbox = document.getElementById(`scheduleCheck${slot}`);
+            const scheduleBox = document.getElementById(`scheduleBox${slot}`);
+            const deleteAtInput = document.getElementById(`deleteAt${slot}`);
             
-            // Reset file input
+            if (checkbox.checked) {
+                scheduleBox.classList.add('active');
+                // Set default to 7 days from now
+                const future = new Date();
+                future.setDate(future.getDate() + 7);
+                future.setMinutes(future.getMinutes() - future.getTimezoneOffset());
+                deleteAtInput.value = future.toISOString().slice(0, 16);
+            } else {
+                scheduleBox.classList.remove('active');
+                deleteAtInput.value = '';
+            }
+            validateSlot(slot);
+        }
+
+        function handleFile(slot) {
             const input = document.getElementById(`file${slot}`);
-            input.value = '';
-            
-            // Reset preview
             const preview = document.getElementById(`preview${slot}`);
-            preview.src = '';
-            preview.classList.remove('active');
+            const dropZone = document.getElementById(`drop${slot}`);
+            const text = dropZone.querySelector('.drop-text');
+            const icon = dropZone.querySelector('.drop-icon');
             
-            // Reset area styling
-            const area = document.getElementById(`area${slot}`);
-            area.classList.remove('has-image');
-            
-            // Clear data
-            uploadData[slot].file = null;
-            uploadData[slot].fileName = '';
-            
-            validateForm(slot);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    text.style.display = 'none';
+                    icon.style.display = 'none';
+                    dropZone.classList.add('has-image');
+                    validateSlot(slot);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
-        function validateForm(slot) {
-            const name = document.getElementById(`name${slot}`).value.trim();
-            const hasFile = uploadData[slot].file !== null;
-            const btn = document.getElementById(`btn${slot}`);
+        function validateSlot(slot) {
+            const hasFile = document.getElementById(`file${slot}`).files.length > 0;
+            const hasName = document.getElementById(`name${slot}`).value.trim() !== '';
+            const scheduleEnabled = document.getElementById(`scheduleCheck${slot}`).checked;
+            const hasSchedule = scheduleEnabled ? document.getElementById(`deleteAt${slot}`).value !== '' : true;
             
-            uploadData[slot].name = name;
-            
-            // Enable button only if both image and name are present
-            btn.disabled = !(hasFile && name.length > 0);
-            
-            // Update button text based on state
-            if (hasFile && name.length > 0) {
-                btn.textContent = 'Upload to Store';
-                btn.classList.remove('success');
-            }
+            document.getElementById(`btn${slot}`).disabled = !(hasFile && hasName && hasSchedule);
         }
 
         function uploadItem(slot) {
-            const btn = document.getElementById(`btn${slot}`);
-            const name = uploadData[slot].name;
-            const image = uploadData[slot].file;
+            const file = document.getElementById(`file${slot}`).files[0];
+            const name = document.getElementById(`name${slot}`).value.trim();
+            const price = document.getElementById(`price${slot}`).value.trim();
+            const description = document.getElementById(`desc${slot}`).value.trim();
+            const preview = document.getElementById(`preview${slot}`).src;
+            const scheduleEnabled = document.getElementById(`scheduleCheck${slot}`).checked;
+            const deleteAt = scheduleEnabled ? document.getElementById(`deleteAt${slot}`).value : null;
             
-            if (!name || !image) {
-                showToast('Error: Please select an image and enter a name');
-                return;
-            }
-
-            // Create item object
             const item = {
-                id: 'item_' + Date.now() + '_' + slot,
+                id: Date.now().toString() + slot,
                 name: name,
-                image: image,
-                added: new Date().toISOString()
+                price: price,
+                description: description,
+                image: preview,
+                added: new Date().toISOString(),
+                deleteAt: deleteAt
             };
-
-            // Get existing items
-            let items = JSON.parse(localStorage.getItem('suxy_items') || '[]');
+            
+            const items = JSON.parse(localStorage.getItem('suxy_items') || '[]');
             items.push(item);
             localStorage.setItem('suxy_items', JSON.stringify(items));
-
-            // Show success state
-            btn.textContent = '✓ Uploaded Successfully';
-            btn.classList.add('success');
-            btn.disabled = true;
             
-            showToast(`"${name}" uploaded successfully`);
-            
-            // Reset after 2 seconds
-            setTimeout(() => {
-                resetSlot(slot);
-            }, 2000);
-        }
-
-        function resetSlot(slot) {
-            // Clear file input
-            const input = document.getElementById(`file${slot}`);
-            input.value = '';
-            
-            // Clear preview
-            const preview = document.getElementById(`preview${slot}`);
-            preview.src = '';
-            preview.classList.remove('active');
-            
-            // Reset area
-            const area = document.getElementById(`area${slot}`);
-            area.classList.remove('has-image');
-            
-            // Clear name
+            // Reset form
+            document.getElementById(`file${slot}`).value = '';
             document.getElementById(`name${slot}`).value = '';
+            document.getElementById(`price${slot}`).value = '';
+            document.getElementById(`desc${slot}`).value = '';
+            document.getElementById(`scheduleCheck${slot}`).checked = false;
+            document.getElementById(`deleteAt${slot}`).value = '';
+            document.getElementById(`scheduleBox${slot}`).classList.remove('active');
+            document.getElementById(`preview${slot}`).style.display = 'none';
+            document.getElementById(`drop${slot}`).classList.remove('has-image');
+            document.getElementById(`drop${slot}`).querySelector('.drop-text').style.display = 'block';
+            document.getElementById(`drop${slot}`).querySelector('.drop-icon').style.display = 'block';
+            document.getElementById(`btn${slot}`).disabled = true;
             
-            // Reset button
-            const btn = document.getElementById(`btn${slot}`);
-            btn.textContent = 'Upload to Store';
-            btn.classList.remove('success');
-            btn.disabled = true;
-            
-            // Clear data
-            uploadData[slot] = { file: null, name: '' };
+            showToast('✓ Item uploaded successfully');
         }
 
         function loadItems() {
+            checkExpiredItems();
             const items = JSON.parse(localStorage.getItem('suxy_items') || '[]');
             const list = document.getElementById('itemsList');
             
             if (items.length === 0) {
-                list.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 3rem; font-size: 1.1rem;">No items in inventory</p>';
+                list.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 3rem;">No items in inventory</p>';
                 return;
             }
             
-            // Sort by newest first
-            items.sort((a, b) => new Date(b.added) - new Date(a.added));
-            
-            list.innerHTML = items.map(item => `
-                <div class="item-card">
-                    <button class="delete-btn" onclick="deleteItem('${item.id}')" title="Delete item">×</button>
-                    <img src="${item.image}" alt="${escapeHtml(item.name)}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22250%22 height=%22250%22><rect width=%22250%22 height=%22250%22 fill=%22%23111%22/><text x=%2250%%22 y=%2250%%22 fill=%22%23666%22 text-anchor=%22middle%22>Image Error</text></svg>'">
-                    <div class="item-info">
-                        <div class="item-title">${escapeHtml(item.name)}</div>
-                        <div class="item-date">${new Date(item.added).toLocaleDateString()} ${new Date(item.added).toLocaleTimeString()}</div>
+            list.innerHTML = items.map(item => {
+                let expiryHtml = '';
+                if (item.deleteAt) {
+                    const expiryDate = new Date(item.deleteAt);
+                    const now = new Date();
+                    const daysLeft = Math.ceil((expiryDate - now) / (1000 * 60 * 60 * 24));
+                    expiryHtml = `<div class="item-expiry">⏱ Expires in ${daysLeft} day${daysLeft !== 1 ? 's' : ''}</div>`;
+                }
+                
+                return `
+                    <div class="item-card">
+                        <button class="delete-btn" onclick="deleteItem('${item.id}')">×</button>
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="item-info">
+                            <div class="item-title">${item.name}</div>
+                            ${item.price ? `<div class="item-price">₦${parseInt(item.price).toLocaleString()}</div>` : ''}
+                            ${item.description ? `<div class="item-desc">${item.description}</div>` : ''}
+                            ${expiryHtml}
+                            <div class="item-date">Added: ${new Date(item.added).toLocaleDateString()}</div>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function deleteItem(id) {
-            if (!confirm('Are you sure you want to delete this item?\n\nThis action cannot be undone.')) return;
-            
+            if (!confirm('Delete this item permanently?')) return;
             let items = JSON.parse(localStorage.getItem('suxy_items') || '[]');
-            const item = items.find(i => i.id === id);
             items = items.filter(i => i.id !== id);
             localStorage.setItem('suxy_items', JSON.stringify(items));
-            
             loadItems();
-            showToast(item ? `"${item.name}" deleted` : 'Item deleted');
+            showToast('✓ Item deleted');
         }
 
         function loadReviews() {
@@ -1022,62 +985,40 @@
             const list = document.getElementById('reviewsList');
             
             if (reviews.length === 0) {
-                list.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 3rem; font-size: 1.1rem;">No reviews to moderate</p>';
+                list.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 3rem;">No reviews to moderate</p>';
                 return;
             }
             
-            // Sort by newest first
             reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
             
             list.innerHTML = reviews.map(r => `
                 <div class="review-item">
                     <div class="review-content">
-                        <h4>${escapeHtml(r.name)}</h4>
+                        <h4>${r.name}</h4>
                         <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
-                        <div class="review-text">${escapeHtml(r.text)}</div>
+                        <div class="review-text">${r.text}</div>
                         <div class="review-meta">${new Date(r.date).toLocaleString()}</div>
                     </div>
-                    <button class="del-review-btn" onclick="deleteReview(${r.id})">Remove Review</button>
+                    <button class="del-review-btn" onclick="deleteReview(${r.id})">Remove</button>
                 </div>
             `).join('');
         }
 
         function deleteReview(id) {
-            if (!confirm('Remove this review permanently?')) return;
-            
+            if (!confirm('Remove this review?')) return;
             let reviews = JSON.parse(localStorage.getItem('suxy_reviews') || '[]');
             reviews = reviews.filter(r => r.id !== id);
             localStorage.setItem('suxy_reviews', JSON.stringify(reviews));
-            
             loadReviews();
-            showToast('Review removed');
+            showToast('✓ Review removed');
         }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function showToast(message) {
+        function showToast(msg) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
+            toast.textContent = msg;
             toast.style.display = 'block';
-            toast.style.borderColor = message.includes('Error') ? '#ff4444' : '#00ff88';
-            toast.style.color = message.includes('Error') ? '#ff4444' : '#00ff88';
-            
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3000);
+            setTimeout(() => toast.style.display = 'none', 3000);
         }
-
-        // Prevent accidental navigation when uploading
-        window.onbeforeunload = function() {
-            const hasPending = Object.values(uploadData).some(d => d.file !== null);
-            if (hasPending) {
-                return "You have unsaved uploads. Are you sure you want to leave?";
-            }
-        };
     </script>
 </body>
 </html>
