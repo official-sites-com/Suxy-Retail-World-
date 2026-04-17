@@ -7,432 +7,120 @@
     <title>Collection | SUXY Retail World</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --deep-black: #050505;
-            --charcoal: #0a0a0a;
-            --elevated: #151515;
-            --surface: #1a1a1a;
-            --gold: #c9a961;
-            --gold-bright: #e0c078;
-            --coral: #d4a594;
-            --white: #ffffff;
-            --gray-light: #a0a0a0;
-            --gray-dark: #505050;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--deep-black);
-            color: var(--white);
-            line-height: 1.6;
-        }
-
-        .bg-mesh {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(201, 169, 97, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(212, 165, 148, 0.03) 0%, transparent 50%);
-        }
-
-        nav {
-            background: rgba(5,5,5,0.95);
-            backdrop-filter: blur(20px);
-            padding: 1.5rem 5%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: var(--gold);
-            cursor: pointer;
-            letter-spacing: 3px;
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
-
-        .brand:hover {
-            opacity: 0.8;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--gray-light);
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            transition: color 0.3s;
-            font-weight: 500;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--gold);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 4rem 5%;
-        }
-
-        .page-header {
-            margin-bottom: 4rem;
-            text-align: center;
-        }
-
-        .page-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 400;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--white) 0%, var(--gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .page-header p {
-            color: var(--gray-light);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Marketplace Grid - Sexy Masonry Style */
-        .marketplace {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .item-card {
-            background: var(--elevated);
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            position: relative;
-            group: card;
-        }
-
-        .item-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(201,169,97,0.2);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-        }
-
-        .image-container {
-            position: relative;
-            height: 400px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-        }
-
-        .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .item-card:hover .image-container img {
-            transform: scale(1.08);
-        }
-
-        .image-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 2rem;
-        }
-
-        .item-card:hover .image-overlay {
-            opacity: 1;
-        }
-
-        .quick-select {
-            background: var(--gold);
-            color: var(--deep-black);
-            border: none;
-            padding: 1rem 2rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transform: translateY(20px);
-            opacity: 0;
-            transition: all 0.3s;
-            border-radius: 2px;
-        }
-
-        .item-card:hover .quick-select {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .quick-select:hover {
-            background: var(--gold-bright);
-        }
-
-        .item-details {
-            padding: 1.5rem;
-            position: relative;
-        }
-
-        .item-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            color: var(--white);
-            margin-bottom: 0.5rem;
-            text-transform: capitalize;
-        }
-
-        .item-category {
-            color: var(--gray-dark);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .selection-indicator {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--gray-dark);
-            border-radius: 50%;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .item-card.selected .selection-indicator {
-            background: var(--gold);
-            border-color: var(--gold);
-        }
-
-        .item-card.selected .selection-indicator::after {
-            content: '✓';
-            color: var(--deep-black);
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
-
-        .item-card.selected {
-            border-color: var(--gold);
-            box-shadow: 0 0 30px rgba(201,169,97,0.1);
-        }
-
-        /* Floating Action Button */
-        .fab {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--gold);
-            color: var(--deep-black);
-            padding: 1.2rem 2.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 40px rgba(201,169,97,0.3);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-        }
-
-        .fab:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 20px 60px rgba(201,169,97,0.4);
-        }
-
-        .fab-count {
-            background: var(--deep-black);
-            color: var(--gold);
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            font-weight: 700;
-        }
-
-        .empty-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 6rem 2rem;
-            color: var(--gray-dark);
-        }
-
-        .empty-state h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            color: var(--white);
-            margin-bottom: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .marketplace { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
-            .image-container { height: 300px; }
-            .nav-links { display: none; }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --deep-black: #050505; --charcoal: #0a0a0a; --elevated: #151515; --surface: #1a1a1a; --gold: #c9a961; --gold-bright: #e0c078; --coral: #d4a594; --white: #ffffff; --gray-light: #a0a0a0; --gray-dark: #505050; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--deep-black); color: var(--white); line-height: 1.6; }
+        .bg-mesh { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 20% 50%, rgba(201, 169, 97, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(212, 165, 148, 0.03) 0%, transparent 50%); }
+        nav { background: rgba(5,5,5,0.95); backdrop-filter: blur(20px); padding: 1.5rem 5%; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .nav-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .brand { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); cursor: pointer; letter-spacing: 3px; text-decoration: none; transition: opacity 0.3s; }
+        .brand:hover { opacity: 0.8; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a { color: var(--gray-light); text-decoration: none; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; transition: color 0.3s; font-weight: 500; }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 4rem 5%; }
+        .page-header { margin-bottom: 4rem; text-align: center; }
+        .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; margin-bottom: 1rem; background: linear-gradient(135deg, var(--white) 0%, var(--gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .page-header p { color: var(--gray-light); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+        .marketplace { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2.5rem; }
+        .item-card { background: var(--elevated); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; position: relative; }
+        .item-card:hover { transform: translateY(-8px); border-color: rgba(201,169,97,0.2); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+        .image-container { position: relative; height: 400px; overflow: hidden; background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%); }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .item-card:hover .image-container img { transform: scale(1.08); }
+        .image-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); opacity: 0; transition: opacity 0.3s; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2rem; }
+        .item-card:hover .image-overlay { opacity: 1; }
+        .quick-select { background: var(--gold); color: var(--deep-black); border: none; padding: 1rem 2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transform: translateY(20px); opacity: 0; transition: all 0.3s; border-radius: 2px; }
+        .item-card:hover .quick-select { transform: translateY(0); opacity: 1; }
+        .quick-select:hover { background: var(--gold-bright); }
+        .item-details { padding: 1.5rem; position: relative; }
+        .item-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--white); margin-bottom: 0.3rem; text-transform: capitalize; }
+        .item-price { color: var(--gold); font-weight: 600; font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .item-category { color: var(--gray-dark); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .selection-indicator { position: absolute; top: 1.5rem; right: 1.5rem; width: 24px; height: 24px; border: 2px solid var(--gray-dark); border-radius: 50%; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+        .item-card.selected .selection-indicator { background: var(--gold); border-color: var(--gold); }
+        .item-card.selected .selection-indicator::after { content: ''; width: 6px; height: 10px; border: solid var(--deep-black); border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-1px, -1px); }
+        .item-card.selected { border-color: var(--gold); box-shadow: 0 0 30px rgba(201,169,97,0.1); }
+        .fab { position: fixed; bottom: 2rem; right: 2rem; background: var(--gold); color: var(--deep-black); padding: 1.2rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; letter-spacing: 1px; box-shadow: 0 10px 40px rgba(201,169,97,0.3); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 999; display: flex; align-items: center; gap: 0.8rem; border: none; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
+        .fab:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 20px 60px rgba(201,169,97,0.4); }
+        .fab-count { background: var(--deep-black); color: var(--gold); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; }
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 6rem 2rem; color: var(--gray-dark); }
+        .empty-state h3 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--white); margin-bottom: 1rem; }
+        @media (max-width: 768px) { .marketplace { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; } .image-container { height: 300px; } .nav-links { display: none; } }
     </style>
 </head>
 <body>
     <div class="bg-mesh"></div>
-    
     <nav>
         <div class="nav-content">
             <a href="index.html" class="brand">SUXY</a>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="order.html" class="active">Collection</a></li>
-                <li><a href="purchase.html">Checkout</a></li>
-            </ul>
+            <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="order.html" class="active">Collection</a></li><li><a href="purchase.html">Checkout</a></li></ul>
         </div>
     </nav>
 
     <div class="container">
-        <div class="page-header">
-            <h1>The Collection</h1>
-            <p>Curated luxury pieces selected for the discerning individual. Click to select items for purchase.</p>
-        </div>
-
+        <div class="page-header"><h1>The Collection</h1><p>Curated luxury pieces selected for the discerning individual. Click to select items for purchase.</p></div>
         <div id="marketplace" class="marketplace">
-            <div class="empty-state">
-                <h3>Loading Collection...</h3>
-                <p>New arrivals coming soon</p>
-            </div>
+            <div class="empty-state"><h3>Loading Collection...</h3><p>New arrivals coming soon</p></div>
         </div>
     </div>
 
-    <button class="fab" id="cartFab" onclick="goToCheckout()" style="display: none;">
-        <span>Checkout</span>
-        <span class="fab-count" id="fabCount">0</span>
-    </button>
+    <button class="fab" id="cartFab" onclick="goToCheckout()" style="display: none;"><span>Checkout</span><span class="fab-count" id="fabCount">0</span></button>
 
     <script>
         let selectedItems = new Set();
 
         function loadItems() {
+            checkExpiredItems();
             const items = JSON.parse(localStorage.getItem('suxy_items') || '[]');
             const container = document.getElementById('marketplace');
             
             if (items.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <h3>Collection Coming Soon</h3>
-                        <p>Our buyers are curating exceptional pieces. Check back shortly.</p>
-                    </div>
-                `;
+                container.innerHTML = `<div class="empty-state"><h3>Collection Coming Soon</h3><p>Our buyers are curating exceptional pieces. Check back shortly.</p></div>`;
                 return;
             }
 
             container.innerHTML = items.map(item => `
-                <div class="item-card ${selectedItems.has(item.id) ? 'selected' : ''}" 
-                     onclick="toggleItem('${item.id}')" data-id="${item.id}">
+                <div class="item-card ${selectedItems.has(item.id) ? 'selected' : ''}" onclick="toggleItem('${item.id}')" data-id="${item.id}">
                     <div class="image-container">
-                        <img src="${item.image}" alt="${item.name}" 
-                             onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22><rect width=%22400%22 height=%22400%22 fill=%22%23111%22/><text x=%2250%%22 y=%2250%%22 font-family=%22sans-serif%22 font-size=%2220%22 fill=%22%23555%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>NO IMAGE</text></svg>'">
-                        <div class="image-overlay">
-                            <button class="quick-select" onclick="event.stopPropagation(); toggleItem('${item.id}')">
-                                ${selectedItems.has(item.id) ? 'Selected' : 'Select Item'}
-                            </button>
-                        </div>
+                        <img src="${item.image}" alt="${item.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22><rect width=%22400%22 height=%22400%22 fill=%22%23111%22/><text x=%2250%%22 y=%2250%%22 font-family=%22sans-serif%22 font-size=%2220%22 fill=%22%23555%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>NO IMAGE</text></svg>'">
+                        <div class="image-overlay"><button class="quick-select" onclick="event.stopPropagation(); toggleItem('${item.id}')">${selectedItems.has(item.id) ? 'Selected' : 'Select Item'}</button></div>
                     </div>
                     <div class="item-details">
                         <h3 class="item-name">${item.name}</h3>
-                        <span class="item-category">Luxury Collection</span>
+                        ${item.price ? `<div class="item-price">₦${parseInt(item.price).toLocaleString()}</div>` : ''}
+                        <span class="item-category">${item.description ? item.description.substring(0, 30) + '...' : 'Luxury Collection'}</span>
                         <div class="selection-indicator"></div>
                     </div>
                 </div>
             `).join('');
         }
 
+        function checkExpiredItems() {
+            let items = JSON.parse(localStorage.getItem('suxy_items') || '[]');
+            const now = new Date().getTime();
+            const validItems = items.filter(item => { if (item.deleteAt) return new Date(item.deleteAt).getTime() > now; return true; });
+            if (validItems.length !== items.length) localStorage.setItem('suxy_items', JSON.stringify(validItems));
+        }
+
         function toggleItem(id) {
             const card = document.querySelector(`[data-id="${id}"]`);
-            
-            if (selectedItems.has(id)) {
-                selectedItems.delete(id);
-                card.classList.remove('selected');
-            } else {
-                selectedItems.add(id);
-                card.classList.add('selected');
-            }
-            
+            if (selectedItems.has(id)) { selectedItems.delete(id); card.classList.remove('selected'); }
+            else { selectedItems.add(id); card.classList.add('selected'); }
             updateCart();
         }
 
         function updateCart() {
-            const fab = document.getElementById('cartFab');
-            const count = document.getElementById('fabCount');
-            
-            if (selectedItems.size > 0) {
-                fab.style.display = 'flex';
-                count.textContent = selectedItems.size;
-                sessionStorage.setItem('suxy_selection', JSON.stringify([...selectedItems]));
-            } else {
-                fab.style.display = 'none';
-                sessionStorage.removeItem('suxy_selection');
-            }
-            
-            // Update button text in overlay
+            const fab = document.getElementById('cartFab'), count = document.getElementById('fabCount');
+            if (selectedItems.size > 0) { fab.style.display = 'flex'; count.textContent = selectedItems.size; sessionStorage.setItem('suxy_selection', JSON.stringify([...selectedItems])); }
+            else { fab.style.display = 'none'; sessionStorage.removeItem('suxy_selection'); }
             document.querySelectorAll('.item-card').forEach(card => {
-                const id = card.getAttribute('data-id');
-                const btn = card.querySelector('.quick-select');
-                if (btn) {
-                    btn.textContent = selectedItems.has(id) ? 'Selected' : 'Select Item';
-                }
+                const id = card.getAttribute('data-id'), btn = card.querySelector('.quick-select');
+                if (btn) btn.textContent = selectedItems.has(id) ? 'Selected' : 'Select Item';
             });
         }
 
-        function goToCheckout() {
-            window.location.href = 'purchase.html';
-        }
-
+        function goToCheckout() { window.location.href = 'purchase.html'; }
         window.onload = loadItems;
         window.addEventListener('storage', loadItems);
     </script>
