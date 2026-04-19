@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUXY Retail World | Purchase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { serif: ['"Playfair Display"', 'serif'], sans: ['"Lato"', 'sans-serif'] },
+                    colors: { brand: { black: '#0a0a0a', gold: '#d4af37', cream: '#f5f5f0', dark: '#1a1a1a' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0a0a0a; color: #f5f5f0; font-family: 'Lato', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .glass-panel { background: rgba(26, 26, 26, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
+        .text-brand-gold { color: #d4af37; }
+        .bg-brand-gold { background-color: #d4af37; }
+        .border-brand-gold { border-color: #d4af37; }
+        .hover\:text-brand-gold:hover { color: #d4af37; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex-shrink-0 group">
+                    <h1 class="font-serif text-2xl md:text-3xl text-brand-gold tracking-wider group-hover:text-white transition-colors duration-300">
+                        SUXY <span class="text-white text-sm md:text-base font-sans tracking-widest uppercase block md:inline md:ml-2 opacity-80">Retail World</span>
+                    </h1>
+                </a>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-gray-300 hover:text-brand-gold px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
+                        <a href="order.html" class="text-gray-300 hover:text-brand-gold px-3 py-2 rounded-md text-sm font-medium transition-colors">Order</a>
+                        <a href="purchase.html" class="text-white px-3 py-2 rounded-md text-sm font-medium transition-colors border-b-2 border-brand-gold">Purchase</a>
+                    </div>
+                </div>
+
+                <div class="-mr-2 flex md:hidden">
+                    <button onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-white/10">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="text-gray-300 hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium w-full text-left">Home</a>
+                <a href="order.html" class="text-gray-300 hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium w-full text-left">Order</a>
+                <a href="purchase.html" class="text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left border-l-2 border-brand-gold">Purchase</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-24 pb-12 px-4 max-w-6xl mx-auto w-full">
+        <h2 class="text-3xl font-serif text-white mb-8 text-center">Review & Complete Purchase</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left: Order Summary -->
+            <div class="space-y-6">
+                <div class="bg-[#1a1a1a] border border-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl text-brand-gold mb-4 border-b border-gray-800 pb-2">Selected Items</h3>
+                    <div id="cart-items" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+                        <!-- Cart items injected here -->
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center text-xl font-bold text-white">
+                        <span>Total</span>
+                        <span id="total-price" class="text-brand-gold">₦0</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="bg-[#1a1a1a] border border-gray-800 rounded-lg p-6">
+                    <h3 class="text-lg text-white mb-4">Contact to Complete Order</h3>
+                    <a id="wa-link" href="#" target="_blank" class="block w-full bg-green-600 hover:bg-green-500 text-white text-center py-4 rounded-md font-bold mb-3 transition-colors flex items-center justify-center gap-3 text-lg">
+                        <i class="fab fa-whatsapp text-2xl"></i> Purchase via WhatsApp
+                    </a>
+                    <a href="tel:+2347012305403" class="block w-full bg-blue-600 hover:bg-blue-500 text-white text-center py-3 rounded-md font-bold transition-colors flex items-center justify-center gap-2">
+                        <i class="fas fa-phone"></i> Call Now
+                    </a>
+                    <p class="text-xs text-gray-500 mt-3 text-center">Pickup: Ekpoma/Benin | Waybill: Lagos</p>
+                </div>
+            </div>
+
+            <!-- Right: Reviews -->
+            <div class="space-y-6">
+                <div class="bg-[#1a1a1a] border border-gray-800 rounded-lg p-6 h-full">
+                    <h3 class="text-xl text-brand-gold mb-4">Customer Reviews</h3>
+                    <div id="reviews-list" class="space-y-4 mb-6 max-h-[300px] overflow-y-auto pr-2">
+                        <!-- Reviews injected here -->
+                    </div>
+                    
+                    <div class="border-t border-gray-800 pt-4 mt-4">
+                        <h4 class="text-sm text-white mb-3">Leave a Review</h4>
+                        <form id="review-form" onsubmit="submitReview(event)" class="space-y-3">
+                            <input type="text" id="review-name" placeholder="Your Name" class="w-full bg-black border border-gray-700 rounded p-2 text-white text-sm focus:border-brand-gold outline-none" required>
+                            <textarea id="review-text" placeholder="Share your experience..." rows="3" class="w-full bg-black border border-gray-700 rounded p-2 text-white text-sm focus:border-brand-gold outline-none" required></textarea>
+                            <button type="submit" class="w-full border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-black py-2 rounded text-sm transition-colors font-bold">
+                                Submit Review
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/10 py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-serif text-brand-gold text-xl mb-2">SUXY Retail World</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="https://wa.me/2347012305403" target="_blank" class="text-gray-400 hover:text-green-500 transition-colors"><i class="fab fa-whatsapp text-2xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors"><i class="fab fa-tiktok text-2xl"></i></a>
+                <a href="tel:+2347012305403" class="text-gray-400 hover:text-blue-500 transition-colors"><i class="fas fa-phone text-2xl"></i></a>
+            </div>
+            <p class="text-gray-600 text-xs mt-6">&copy; 2026 SUXY Retail World.</p>
+        </div>
+    </footer>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-brand-gold text-black px-6 py-3 rounded shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-[80] font-bold">
+        Notification
+    </div>
+
+    <script>
+        // Firebase Init
+        const firebaseConfig = {
+            apiKey: "AIzaSyAOoMeyH1QKMNhJ6ICfeLo2kEFeeYTEFcg",
+            authDomain: "suxyretailworld.firebaseapp.com",
+            projectId: "suxyretailworld",
+            storageBucket: "suxyretailworld.firebasestorage.app",
+            messagingSenderId: "615863570909",
+            appId: "1:615863570909:web:79f66a04ec60c9845b2634"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let cart = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCart();
+            loadReviews();
+            
+            // Listen for reviews update
+            db.collection('reviews').orderBy('timestamp', 'desc').onSnapshot(() => loadReviews());
+        });
+
+        function loadCart() {
+            cart = JSON.parse(localStorage.getItem('suxy_cart')) || [];
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('total-price');
+            const waLink = document.getElementById('wa-link');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 border border-dashed border-gray-700 rounded-lg">
+                        <p class="text-gray-400 mb-2">Your cart is empty.</p>
+                        <a href="order.html" class="text-brand-gold hover:underline text-sm">Browse Items</a>
+                    </div>`;
+                totalEl.textContent = '₦0';
+                waLink.style.opacity = '0.5';
+                waLink.style.pointerEvents = 'none';
+                return;
+            }
+
+            waLink.style.opacity = '1';
+            waLink.style.pointerEvents = 'auto';
+
+            let total = 0;
+            let waMessage = "Hello SUXY Retail World,%0A%0AI want to buy:%0A";
+            
+            container.innerHTML = cart.map((item, idx) => {
+                total += Number(item.price);
+                waMessage += `${idx + 1}. ${item.name} (₦${item.price})%0A`;
+                return `
+                    <div class="flex items-center gap-4 bg-black/40 p-3 rounded border border-gray-800">
+                        <img src="${item.imageUrl}" class="w-16 h-16 object-cover rounded" alt="${item.name}">
+                        <div class="flex-grow">
+                            <h4 class="text-white font-serif text-sm">${item.name}</h4>
+                            <p class="text-brand-gold text-sm font-bold">₦${item.price}</p>
+                            <p class="text-gray-500 text-xs">${item.category}</p>
+                        </div>
+                        <button onclick="removeItem('${item.id}')" class="text-gray-500 hover:text-red-500 transition-colors">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            totalEl.textContent = '₦' + total;
+            waMessage += `%0ATotal: ₦${total}%0A%0APlease send payment details.`;
+            waLink.href = `https://wa.me/2347012305403?text=${waMessage}`;
+        }
+
+        function removeItem(id) {
+            cart = cart.filter(c => c.id !== id);
+            localStorage.setItem('suxy_cart', JSON.stringify(cart));
+            renderCart();
+            showToast('Item removed');
+        }
+
+        async function loadReviews() {
+            const snapshot = await db.collection('reviews').orderBy('timestamp', 'desc').get();
+            const reviews = snapshot.docs.map(doc => doc.data());
+            
+            const list = document.getElementById('reviews-list');
+            if (reviews.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 italic text-sm">No reviews yet. Be the first!</p>';
+                return;
+            }
+            
+            list.innerHTML = reviews.map(r => `
+                <div class="bg-black/30 p-3 rounded border-l-2 border-brand-gold">
+                    <p class="text-gray-300 text-sm italic">"${r.text}"</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-xs text-brand-gold font-bold">- ${r.name}</span>
+                        <span class="text-[10px] text-gray-600">${r.timestamp ? new Date(r.timestamp.toDate()).toLocaleDateString() : ''}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function submitReview(e) {
+            e.preventDefault();
+            const name = document.getElementById('review-name').value;
+            const text = document.getElementById('review-text').value;
+            
+            try {
+                await db.collection('reviews').add({
+                    name,
+                    text,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showToast('Review submitted!');
+                document.getElementById('review-form').reset();
+            } catch (err) {
+                console.error(err);
+                showToast('Error submitting review');
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+        
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+    </script>
+</body>
+</html>

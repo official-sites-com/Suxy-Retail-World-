@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUXY Retail World | Order</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { serif: ['"Playfair Display"', 'serif'], sans: ['"Lato"', 'sans-serif'] },
+                    colors: { brand: { black: '#0a0a0a', gold: '#d4af37', cream: '#f5f5f0', dark: '#1a1a1a' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0a0a0a; color: #f5f5f0; font-family: 'Lato', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .glass-panel { background: rgba(26, 26, 26, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
+        .text-brand-gold { color: #d4af37; }
+        .bg-brand-gold { background-color: #d4af37; }
+        .border-brand-gold { border-color: #d4af37; }
+        .hover\:text-brand-gold:hover { color: #d4af37; }
+        .hover\:bg-brand-gold:hover { background-color: #d4af37; }
+        
+        .item-card { transition: all 0.3s ease; border: 1px solid #333; }
+        .item-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.3); border-color: #555; }
+        .selected-item { border: 2px solid #d4af37; position: relative; }
+        .selected-item::after { 
+            content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; top: 10px; right: 10px; background: #d4af37; color: #000;
+            width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex-shrink-0 group">
+                    <h1 class="font-serif text-2xl md:text-3xl text-brand-gold tracking-wider group-hover:text-white transition-colors duration-300">
+                        SUXY <span class="text-white text-sm md:text-base font-sans tracking-widest uppercase block md:inline md:ml-2 opacity-80">Retail World</span>
+                    </h1>
+                </a>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-gray-300 hover:text-brand-gold px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
+                        <a href="order.html" class="text-white px-3 py-2 rounded-md text-sm font-medium transition-colors border-b-2 border-brand-gold">Order</a>
+                        <a href="purchase.html" class="text-gray-300 hover:text-brand-gold px-3 py-2 rounded-md text-sm font-medium transition-colors relative">
+                            Purchase
+                            <span id="cart-count" class="absolute -top-1 -right-2 bg-brand-gold text-black text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center opacity-0 transition-opacity">0</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="-mr-2 flex md:hidden">
+                    <button onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-white/10">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="text-gray-300 hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium w-full text-left">Home</a>
+                <a href="order.html" class="text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left border-l-2 border-brand-gold">Order</a>
+                <a href="purchase.html" class="text-gray-300 hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium w-full text-left">Purchase</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-24 pb-12 px-4 max-w-7xl mx-auto w-full">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-serif text-white mb-4">AVAILABLE ITEMS</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">A refined collection, selected with intention, made just for you. Click to select items for Purchase.</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex flex-wrap justify-center gap-4 mb-10" id="category-filters">
+            <button onclick="filterItems('all')" class="filter-btn px-4 py-1 rounded-full border border-brand-gold text-brand-gold text-sm bg-brand-gold/10" data-cat="all">All</button>
+            <button onclick="filterItems('clothing')" class="filter-btn px-4 py-1 rounded-full border border-gray-700 text-gray-400 text-sm hover:border-white hover:text-white transition-colors" data-cat="clothing">Clothing</button>
+            <button onclick="filterItems('footwear')" class="filter-btn px-4 py-1 rounded-full border border-gray-700 text-gray-400 text-sm hover:border-white hover:text-white transition-colors" data-cat="footwear">Footwear</button>
+            <button onclick="filterItems('bags')" class="filter-btn px-4 py-1 rounded-full border border-gray-700 text-gray-400 text-sm hover:border-white hover:text-white transition-colors" data-cat="bags">Bags</button>
+            <button onclick="filterItems('accessories')" class="filter-btn px-4 py-1 rounded-full border border-gray-700 text-gray-400 text-sm hover:border-white hover:text-white transition-colors" data-cat="accessories">Accessories</button>
+            <button onclick="filterItems('household')" class="filter-btn px-4 py-1 rounded-full border border-gray-700 text-gray-400 text-sm hover:border-white hover:text-white transition-colors" data-cat="household">Household</button>
+            <button onclick="filterItems('varieties')" class="filter-btn px-4 py-1 rounded-full border border-gray-700 text-gray-400 text-sm hover:border-white hover:text-white transition-colors" data-cat="varieties">Varieties</button>
+        </div>
+
+        <!-- Items Grid -->
+        <div id="items-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[400px]">
+            <!-- Items injected here -->
+            <div class="col-span-full flex items-center justify-center h-64">
+                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-gold"></div>
+            </div>
+        </div>
+
+        <!-- Floating Cart Button -->
+        <div id="floating-cart" class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-40 hidden">
+            <a href="purchase.html" class="bg-brand-gold text-black px-6 py-4 rounded-full font-bold shadow-lg shadow-brand-gold/40 hover:scale-105 transition-transform flex items-center gap-2 animate-bounce">
+                Review Order (<span id="floating-count">0</span>)
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/10 py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-serif text-brand-gold text-xl mb-2">SUXY Retail World</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="https://wa.me/2347012305403" target="_blank" class="text-gray-400 hover:text-green-500 transition-colors"><i class="fab fa-whatsapp text-2xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors"><i class="fab fa-tiktok text-2xl"></i></a>
+                <a href="tel:+2347012305403" class="text-gray-400 hover:text-blue-500 transition-colors"><i class="fas fa-phone text-2xl"></i></a>
+            </div>
+            <p class="text-gray-600 text-xs mt-6">&copy; 2026 SUXY Retail World.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Firebase Init
+        const firebaseConfig = {
+            apiKey: "AIzaSyAOoMeyH1QKMNhJ6ICfeLo2kEFeeYTEFcg",
+            authDomain: "suxyretailworld.firebaseapp.com",
+            projectId: "suxyretailworld",
+            storageBucket: "suxyretailworld.firebasestorage.app",
+            messagingSenderId: "615863570909",
+            appId: "1:615863570909:web:79f66a04ec60c9845b2634"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let allItems = [];
+        let cart = JSON.parse(localStorage.getItem('suxy_cart')) || [];
+        let currentFilter = 'all';
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check URL params for category
+            const urlParams = new URLSearchParams(window.location.search);
+            const cat = urlParams.get('cat');
+            if (cat) {
+                currentFilter = cat;
+                updateFilterButtons();
+            }
+            
+            loadItems();
+            updateCartUI();
+            
+            // Real-time updates
+            db.collection('items').onSnapshot(() => loadItems());
+        });
+
+        async function loadItems() {
+            const snapshot = await db.collection('items').get();
+            allItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderItems();
+        }
+
+        function renderItems() {
+            const grid = document.getElementById('items-grid');
+            const now = new Date();
+            
+            // Filter by category and expiry
+            let filtered = allItems.filter(item => {
+                if (currentFilter !== 'all' && item.category !== currentFilter) return false;
+                if (item.expiry && new Date(item.expiry) < now) return false;
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-20">
+                        <i class="fas fa-box-open text-6xl text-gray-700 mb-4"></i>
+                        <p class="text-xl text-gray-400">No items available in this category.</p>
+                    </div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => {
+                const isSelected = cart.find(c => c.id === item.id);
+                return `
+                    <div class="item-card bg-[#1a1a1a] rounded-lg overflow-hidden cursor-pointer group relative ${isSelected ? 'selected-item' : ''}" onclick="toggleCart('${item.id}')">
+                        <div class="h-64 overflow-hidden relative">
+                            <img src="${item.imageUrl}" alt="${item.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+                            ${isSelected ? '<div class="absolute inset-0 bg-brand-gold/10"></div>' : ''}
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-serif text-white truncate pr-2">${item.name}</h3>
+                                <span class="text-brand-gold font-bold whitespace-nowrap">₦${item.price}</span>
+                            </div>
+                            <p class="text-gray-400 text-sm line-clamp-2 mb-3 h-10">${item.description || 'Premium quality item.'}</p>
+                            <div class="flex items-center justify-between mt-2">
+                                <span class="text-xs text-gray-500 bg-black px-2 py-1 rounded border border-gray-800 uppercase">${item.category || 'Item'}</span>
+                                <span class="text-brand-gold text-sm font-medium ${isSelected ? 'text-white' : ''}">
+                                    ${isSelected ? 'Selected' : 'Select'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleCart(id) {
+            const idx = cart.findIndex(c => c.id === id);
+            if (idx > -1) {
+                cart.splice(idx, 1);
+            } else {
+                const item = allItems.find(i => i.id === id);
+                if (item) cart.push(item);
+            }
+            saveCart();
+            renderItems(); // Re-render to show selection state
+            updateCartUI();
+        }
+
+        function saveCart() {
+            localStorage.setItem('suxy_cart', JSON.stringify(cart));
+        }
+
+        function updateCartUI() {
+            const count = cart.length;
+            const badge = document.getElementById('cart-count');
+            const floating = document.getElementById('floating-cart');
+            const floatingCount = document.getElementById('floating-count');
+            
+            badge.textContent = count;
+            badge.style.opacity = count > 0 ? '1' : '0';
+            
+            if (count > 0) {
+                floating.classList.remove('hidden');
+                floatingCount.textContent = count;
+            } else {
+                floating.classList.add('hidden');
+            }
+        }
+
+        function filterItems(cat) {
+            currentFilter = cat;
+            updateFilterButtons();
+            renderItems();
+            // Update URL without reload
+            const url = new URL(window.location);
+            if (cat === 'all') url.searchParams.delete('cat');
+            else url.searchParams.set('cat', cat);
+            window.history.pushState({}, '', url);
+        }
+
+        function updateFilterButtons() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.cat === currentFilter) {
+                    btn.className = 'filter-btn px-4 py-1 rounded-full border border-brand-gold text-brand-gold text-sm bg-brand-gold/10';
+                } else {
+                    btn.className = 'filter-btn px-4 py-1 rounded-full border border-gray-700 text-gray-400 text-sm hover:border-white hover:text-white transition-colors';
+                }
+            });
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
