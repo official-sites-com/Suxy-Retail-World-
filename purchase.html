@@ -1,4 +1,3 @@
-<!-- purchase.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,367 +6,112 @@
     <title>Checkout | SUXY Retail World</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --deep-black: #050505;
-            --charcoal: #0a0a0a;
-            --elevated: #151515;
-            --surface: #1f1f1f;
-            --gold: #c9a961;
-            --gold-bright: #e0c078;
-            --coral: #d4a594;
-            --white: #ffffff;
-            --gray-light: #a0a0a0;
-            --gray-dark: #505050;
+            --deep-black: #050505; --charcoal: #0a0a0a; --elevated: #151515; --surface: #1f1f1f;
+            --gold: #c9a961; --gold-bright: #e0c078; --coral: #d4a594;
+            --white: #ffffff; --gray-light: #a0a0a0; --gray-dark: #505050;
         }
-
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--deep-black);
-            color: var(--white);
-            line-height: 1.6;
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(201,169,97,0.05) 0%, transparent 50%);
+            color: var(--white); line-height: 1.6;
+            background-image: radial-gradient(circle at 0% 0%, rgba(201,169,97,0.05) 0%, transparent 50%);
         }
-
         nav {
-            background: rgba(5,5,5,0.95);
-            backdrop-filter: blur(20px);
-            padding: 1.5rem 5%;
+            background: rgba(5,5,5,0.95); backdrop-filter: blur(20px); padding: 1.5rem 5%;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-
         .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            max-width: 1400px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
         }
-
         .brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: var(--gold);
-            text-decoration: none;
-            cursor: pointer;
-            letter-spacing: 3px;
-            transition: opacity 0.3s;
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            color: var(--gold); text-decoration: none; cursor: pointer; letter-spacing: 3px; transition: opacity 0.3s;
         }
-
-        .brand:hover {
-            opacity: 0.8;
+        .brand:hover { opacity: 0.8; }
+        .Container {
+            max-width: 1000px; margin: 0 auto; padding: 4rem 5%;
         }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 4rem 5%;
-        }
-
         .page-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            font-weight: 400;
+            font-family: 'Playfair Display', serif; font-size: 3rem;
+            margin-bottom: 3rem; text-align: center; font-weight: 400;
         }
-
-        /* Glass Cards */
         .glass-card {
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+            padding: 2.5rem; margin-bottom: 2rem; position: relative; overflow: hidden;
         }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
+        .Glass-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
             background: linear-gradient(90deg, transparent, rgba(201,169,97,0.3), transparent);
         }
-
         .section-title {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--gold);
-            margin-bottom: 1.5rem;
-            font-weight: 600;
+            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px;
+            color: var(--gold); margin-bottom: 1.5rem; font-weight: 600;
         }
-
-        /* Selected Items */
-        .items-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .Items-list { display: flex; flex-direction: column; gap: 1rem; }
+        .Item-row {
+            display: flex; align-items: center; gap: 1.5rem; padding: 1rem;
+            background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);
         }
-
-        .item-row {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            padding: 1rem;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05);
+        .Item-thumb {
+            width: 80px; height: 80px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);
         }
-
-        .item-thumb {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid rgba(255,255,255,0.1);
+        .Item-info h4 {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 400; margin-bottom: 0.3rem;
         }
-
-        .item-info h4 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            font-weight: 400;
-            margin-bottom: 0.3rem;
-        }
-
-        .item-price {
-            color: var(--gold);
-            font-weight: 600;
-            font-size: 1rem;
-            margin-top: 0.2rem;
-        }
-
-        .item-info p {
-            color: var(--gray-dark);
-            font-size: 0.9rem;
-        }
-
+        .Item-info p { color: var(--gray-dark); font-size: 0.9rem; }
         .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--gray-dark);
+            text-align: center; padding: 3rem; color: var(--gray-dark);
         }
-
-        .empty-state a {
-            color: var(--gold);
-            text-decoration: none;
-            border-bottom: 1px solid var(--gold);
-        }
-
-        /* Form Styles */
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
+        .empty-state a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full-width { grid-column: 1 / -1; }
         .form-group label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--gray-light);
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--gray-light); margin-bottom: 0.5rem; font-weight: 500;
         }
-
-        .form-group input,
-        .form-group textarea {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 1rem;
-            color: var(--white);
-            font-family: inherit;
-            border-radius: 4px;
-            transition: all 0.3s;
+        .form-group input, .form-group textarea {
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 1rem;
+            color: var(--white); font-family: inherit; border-radius: 4px; transition: all 0.3s;
         }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--gold);
-            background: rgba(0,0,0,0.5);
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--gold); background: rgba(0,0,0,0.5);
         }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        /* Action Buttons */
-        .actions {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .actions { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
         .btn {
-            padding: 1.2rem;
-            border: none;
-            border-radius: 4px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-            text-align: center;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
+            padding: 1.2rem; border: none; border-radius: 4px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 2px; cursor: pointer;
+            transition: all 0.3s; font-size: 0.9rem; text-align: center; text-decoration: none;
+            display: flex; align-items: center; justify-content: center; gap: 0.8rem;
         }
-
-        .btn-whatsapp {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2);
-        }
-
-        .btn-whatsapp:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.3);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--white);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-            background: rgba(201,169,97,0.05);
-        }
-
-        /* Reviews Section */
-        .reviews-container {
-            margin-top: 4rem;
-        }
-
+        .btn-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); color: white; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2); }
+        .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.3); }
+        .btn-secondary { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.2); }
+        .btn-secondary:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,169,97,0.05); }
+        .reviews-Container { margin-top: 4rem; }
         .review-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            position: relative;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px;
+            padding: 1.5rem; margin-bottom: 1rem; position: relative;
         }
-
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 0.5rem;
-        }
-
-        .reviewer-name {
-            font-weight: 600;
-            color: var(--gold);
-            font-size: 1.1rem;
-        }
-
-        .review-date {
-            font-size: 0.8rem;
-            color: var(--gray-dark);
-        }
-
-        .stars {
-            color: var(--gold);
-            margin-bottom: 0.5rem;
-            letter-spacing: 2px;
-        }
-
-        .review-text {
-            color: var(--gray-light);
-            line-height: 1.6;
-        }
-
-        .review-form {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .star-rating {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .star-rating input {
-            display: none;
-        }
-
-        .star-rating label {
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--gray-dark);
-            transition: color 0.2s;
-        }
-
-        .star-rating input:checked ~ label,
-        .star-rating label:hover,
-        .star-rating label:hover ~ label {
-            color: var(--gold);
-        }
-
-        .star-rating input:checked + label {
-            color: var(--gold);
-        }
-
-        /* SVG Icons */
-        .icon {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
-
-        .social-icon svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .tiktok-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--gray-light);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        .tiktok-link:hover {
-            color: var(--coral);
-        }
-
+        .review-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem; }
+        .reviewer-name { font-weight: 600; color: var(--gold); font-size: 1.1rem; }
+        .review-date { font-size: 0.8rem; color: var(--gray-dark); }
+        .stars { color: var(--gold); margin-bottom: 0.5rem; letter-spacing: 2px; }
+        .review-text { color: var(--gray-light); line-height: 1.6; }
+        .review-form { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
+        .star-rating { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .star-rating input { display: none; }
+        .star-rating label { cursor: pointer; font-size: 1.5rem; color: var(--gray-dark); transition: color 0.2s; }
+        .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: var(--gold); }
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
             .page-title { font-size: 2rem; }
-            .glass-card { padding: 1.5rem; }
+            .Glass-card { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -379,19 +123,19 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="Container">
         <h1 class="page-title">Complete Your Order</h1>
 
-        <div class="glass-card">
+        <div class="Glass-card">
             <h3 class="section-title">Selected Items</h3>
-            <div id="selectedItems" class="items-list">
+            <div id="selectedItems" class="Items-list">
                 <div class="empty-state">
-                    <p>No items selected. <a href="order.html">Browse collection</a></p>
+                    <p>No Items selected. <a href="Order.html">Browse Collection</a></p>
                 </div>
             </div>
         </div>
 
-        <div class="glass-card">
+        <div class="Glass-card">
             <h3 class="section-title">Delivery Details</h3>
             <form id="orderForm" class="form-grid">
                 <div class="form-group">
@@ -413,35 +157,30 @@
             </form>
 
             <div class="actions">
-                <button class="btn btn-whatsapp" onclick="submitOrder()">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <button class="btn btn-whatsapp" onclick="SubmitOrder()">
                     <span>Complete Order via WhatsApp</span>
                 </button>
                 <a href="tel:+2347012305403" class="btn btn-secondary">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
                     <span>Call to Order: +234 701 230 5403</span>
                 </a>
             </div>
             
-            <div style="text-align: center; margin-top: 1.5rem;">
-                <a href="https://vm.tiktok.com/ZS9LqM85v8ubD-5rRDV/" target="_blank" class="tiktok-link">
-                    <svg class="icon" viewBox="0 0 24 24" style="fill: var(--coral);"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
+            <div Style="text-align: center; margin-top: 1.5rem;">
+                <A href="https://www.tiktok.com/@suxy_retail_world" target="_blank" Style="color: var(--gray-light); text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem;">
                     <span>Follow us on TikTok</span>
-                    <span style="color: var(--coral); font-weight: 600;">@suxy_retail_world</span>
-                </a>
+                    <span Style="color: var(--coral);">♪ @suxy_retail_world</span>
+                </A>
             </div>
         </div>
 
-        <div class="reviews-container">
-            <div class="glass-card">
+        <div class="reviews-Container">
+            <div class="Glass-card">
                 <h3 class="section-title">Customer Reviews</h3>
-                <div id="reviewsList">
-                    <!-- Reviews load here -->
-                </div>
+                <div id="reviewsList"></div>
 
                 <div class="review-form">
-                    <h4 style="margin-bottom: 1rem; color: var(--white);">Share Your Experience</h4>
-                    <form id="reviewForm" onsubmit="submitReview(event)">
+                    <h4 Style="margin-bottom: 1rem; color: var(--white);">Share Your Experience</h4>
+                    <form id="reviewForm" onsubmit="SubmitReview(event)">
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>Your Name</label>
@@ -449,7 +188,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Rating</label>
-                                <select id="reviewRating" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 1rem; color: var(--white); border-radius: 4px;">
+                                <select id="reviewRating" Style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 1rem; color: var(--white); border-radius: 4px;">
                                     <option value="5">★★★★★ (5/5)</option>
                                     <option value="4">★★★★☆ (4/5)</option>
                                     <option value="3">★★★☆☆ (3/5)</option>
@@ -462,9 +201,7 @@
                                 <textarea id="reviewText" rows="3" required placeholder="Tell us about your experience..."></textarea>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-secondary" style="margin-top: 1rem; width: 100%;">
-                            Submit Review
-                        </button>
+                        <button type="submit" class="btn btn-secondary" Style="margin-top: 1rem; width: 100%;">Submit Review</button>
                     </form>
                 </div>
             </div>
@@ -472,92 +209,119 @@
     </div>
 
     <script>
-        function loadSelectedItems() {
-            const selectedIds = JSON.parse(sessionStorage.getItem('suxy_selection') || '[]');
-            const allItems = JSON.parse(localStorage.getItem('suxy_items') || '[]');
-            const container = document.getElementById('selectedItems');
+        // Initialize session ID
+        if (!sessionStorage.getItem('suxy_session_id')) {
+            sessionStorage.setItem('suxy_session_id', Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9));
+        }
+        
+        const SESSION_ID = sessionStorage.getItem('suxy_session_id');
+        const DEFAULT_TTL = 24 * 60 * 60 * 1000; // 24 hours in ms
 
-            if (selectedIds.length === 0) {
-                container.innerHTML = `
+        function LoadSelectedItems() {
+            const selectedIds = JSON.parse(sessionStorage.getItem('suxy_selection') || '[]');
+            const allItems = JSON.parse(localStorage.getItem('suxy_Items') || '[]');
+            const Container = document.getElementById('selectedItems');
+            const now = new Date().getTime();
+            
+            // Filter out expired Items and already ordered Items
+            const visibleItems = allItems.filter(item => {
+                // Check if expired
+                if (item.expires && now > item.expires) return false;
+                // Check if already ordered by this session
+                if (item.orderedBy && item.orderedBy.includes(SESSION_ID)) return false;
+                return true;
+            }).filter(id => selectedIds.includes(id));
+            
+            if (visibleItems.length === 0) {
+                Container.innerHTML = `
                     <div class="empty-state">
-                        <p>No items selected. <a href="order.html">Browse collection</a></p>
+                        <p>No Items selected. <a href="Order.html">Browse Collection</a></p>
                     </div>
                 `;
                 return;
             }
-
-            const selected = allItems.filter(item => selectedIds.includes(item.id));
-            container.innerHTML = selected.map(item => `
-                <div class="item-row">
-                    <img src="${item.image}" alt="${item.name}" class="item-thumb" 
+            
+            Container.innerHTML = VisibleItems.map(item => `
+                <div class="Item-row">
+                    <img src="${item.Image}" alt="${EscapeHtml(item.name)}" class="Item-thumb" 
                          onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><rect width=%2280%22 height=%2280%22 fill=%22%23222%22/></svg>'">
-                    <div class="item-info">
-                        <h4>${item.name}</h4>
-                        ${item.price ? `<div class="item-price">₦${parseInt(item.price).toLocaleString()}</div>` : ''}
-                        <p>${item.description || 'Luxury Collection'}</p>
+                    <div class="Item-info">
+                        <h4>${EscapeHtml(item.name)}</h4>
+                        <p>Luxury Collection</p>
                     </div>
                 </div>
             `).join('');
         }
 
-        function submitOrder() {
+        Function SubmitOrder() {
             const name = document.getElementById('fullName').value;
             const phone = document.getElementById('phone').value;
             const address = document.getElementById('address').value;
             
-            if (!name || !phone || !address) {
+            If (!name || !phone || !address) {
                 alert('Please fill in all required fields');
                 return;
             }
-
+            
             const selectedIds = JSON.parse(sessionStorage.getItem('suxy_selection') || '[]');
-            const allItems = JSON.parse(localStorage.getItem('suxy_items') || '[]');
+            const allItems = JSON.parse(localStorage.getItem('suxy_Items') || '[]');
             const selected = allItems.filter(item => selectedIds.includes(item.id));
             const notes = document.getElementById('notes').value;
-
-            let message = `*NEW ORDER - SUXY RETAIL WORLD*%0A%0A`;
+            
+            Let message = `*NEW ORDER - SUXY RETAIL WORLD*%0A%0A`;
             message += `*Customer:* ${name}%0A`;
             message += `*Phone:* ${phone}%0A`;
-            message += `*Address:* ${address}%0A%0A`;
+            message += `*Address:* ${address}%0A`;
             message += `*Items:*%0A`;
-            let total = 0;
             selected.forEach((item, i) => {
-                const price = item.price ? ` - ₦${parseInt(item.price).toLocaleString()}` : '';
-                message += `${i + 1}. ${item.name}${price}%0A`;
-                if (item.price) total += parseInt(item.price);
+                message += `${i + 1}. ${item.name}%0A`;
             });
-            if (total > 0) message += `%0A*Total:* ₦${total.toLocaleString()}%0A`;
-            if (notes) message += `%0A*Notes:* ${notes}`;
-
-            window.open(`https://wa.me/2347012305403?text=${message}`, '_blank');
+            If (notes) message += `%0A*Notes:* ${notes}`;
+            
+            // Mark all selected Items as ordered
+            selectedIds.forEach(id => markItemAsOrdered(id));
+            
+            Window.open(`https://wa.me/2347012305403?text=${message}`, '_blank');
         }
 
-        function loadReviews() {
+        Function markItemAsOrdered(ItemId) {
+            Let Items = JSON.parse(localStorage.getItem('suxy_Items') || '[]');
+            const Item = Items.find(i => i.id === ItemId);
+            If (Item) {
+                If (!Item.orderedBy) Item.orderedBy = [];
+                If (!Item.orderedBy.includes(SESSION_ID)) {
+                    Item.orderedBy.push(SESSION_ID);
+                    localStorage.setItem('suxy_Items', JSON.stringify(Items));
+                }
+            }
+        }
+
+        Function LoadReviews() {
             const reviews = JSON.parse(localStorage.getItem('suxy_reviews') || '[]');
-            const container = document.getElementById('reviewsList');
+            const Container = document.getElementById('reviewsList');
             
-            if (reviews.length === 0) {
-                container.innerHTML = '<p style="color: var(--gray-dark); font-style: italic;">No reviews yet. Be the first!</p>';
+            If (reviews.length === 0) {
+                Container.innerHTML = '<p Style="color: var(--gray-dark); font-style: italic;">No reviews yet. Be the first!</p>';
                 return;
             }
-
+            
             reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
             
-            container.innerHTML = reviews.map(r => `
+            Container.innerHTML = reviews.map(r => `
                 <div class="review-card">
                     <div class="review-header">
                         <div>
-                            <div class="reviewer-name">${r.name}</div>
+                            <div class="reviewer-name">${EscapeHtml(r.name)}</div>
                             <div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
                         </div>
                         <span class="review-date">${new Date(r.date).toLocaleDateString()}</span>
                     </div>
-                    <div class="review-text">${r.text}</div>
+                    <div class="review-text">${EscapeHtml(r.text)}</div>
                 </div>
             `).join('');
         }
 
-        function submitReview(e) {
+        Function SubmitReview(e) {
             e.preventDefault();
             const review = {
                 id: Date.now(),
@@ -566,29 +330,35 @@
                 text: document.getElementById('reviewText').value,
                 date: new Date().toISOString()
             };
-
+            
             const reviews = JSON.parse(localStorage.getItem('suxy_reviews') || '[]');
             reviews.push(review);
             localStorage.setItem('suxy_reviews', JSON.stringify(reviews));
             
             document.getElementById('reviewForm').reset();
-            loadReviews();
+            LoadReviews();
             
             const btn = e.target.querySelector('button[type="submit"]');
             const originalText = btn.textContent;
             btn.textContent = 'Review Submitted!';
-            btn.style.borderColor = '#25D366';
-            btn.style.color = '#25D366';
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.style.borderColor = '';
-                btn.style.color = '';
+            btn.Style.borderColor = '#25D366';
+            btn.Style.color = '#25D366';
+            SetTimeout(() => {
+                btn.textContent = OriginalText;
+                btn.Style.borderColor = '';
+                btn.Style.color = '';
             }, 2000);
         }
 
-        window.onload = () => {
-            loadSelectedItems();
-            loadReviews();
+        Function EscapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        Window.onload = () => {
+            LoadSelectedItems();
+            LoadReviews();
         };
     </script>
 </body>
