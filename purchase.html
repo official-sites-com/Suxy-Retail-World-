@@ -4,275 +4,262 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUXY Retail World | Purchase</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { serif: ['"Playfair Display"', 'serif'], sans: ['"Lato"', 'sans-serif'] },
-                    colors: { brand: { black: '#0a0a0a', gold: '#d4af37', cream: '#f5f5f0', dark: '#1a1a1a' } }
-                }
-            }
-        }
-    </script>
     <style>
-        body { background-color: #0a0a0a; color: #f5f5f0; font-family: 'Lato', sans-serif; }
-        .font-serif { font-family: 'Playfair Display', serif; }
-        .glass-panel { background: rgba(26, 26, 26, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
-        .text-brand-gold { color: #d4af37; }
-        .bg-brand-gold { background-color: #d4af37; }
-        .border-brand-gold { border-color: #d4af37; }
-        .hover\:text-brand-gold:hover { color: #d4af37; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; color: #f5f5f0; font-family: 'Segoe UI', sans-serif; line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 15px; }
+        nav { background: rgba(26,26,26,0.95); padding: 15px 0; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid #d4af37; }
+        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: Georgia, serif; color: #d4af37; font-size: 24px; font-weight: bold; text-decoration: none; }
+        .logo span { color: #fff; font-size: 12px; display: block; font-family: sans-serif; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: #ccc; text-decoration: none; font-size: 14px; text-transform: uppercase; }
+        .nav-links a.active { color: #d4af37; }
+        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 20px; }
+        main { padding-top: 100px; min-height: 100vh; padding-bottom: 60px; }
+        .page-title { font-family: Georgia, serif; font-size: 32px; text-align: center; margin-bottom: 40px; color: #fff; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .box { background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 30px; }
+        .box h2 { color: #d4af37; font-family: Georgia, serif; font-size: 20px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #333; }
+        .cart-item { display: flex; gap: 15px; padding: 15px; background: #0a0a0a; border-radius: 8px; margin-bottom: 15px; border: 1px solid #333; }
+        .cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 5px; }
+        .cart-item .info { flex: 1; }
+        .cart-item h4 { color: #fff; margin-bottom: 5px; font-family: Georgia, serif; }
+        .cart-item .price { color: #d4af37; font-weight: bold; }
+        .cart-item .cat { color: #666; font-size: 12px; text-transform: uppercase; }
+        .cart-item button { background: none; border: none; color: #666; cursor: pointer; font-size: 18px; }
+        .cart-item button:hover { color: #dc3545; }
+        .total-row { display: flex; justify-content: space-between; padding-top: 20px; border-top: 1px solid #333; font-size: 20px; font-weight: bold; }
+        .total-row span:last-child { color: #d4af37; }
+        .empty-cart { text-align: center; padding: 40px; color: #666; }
+        .btn { display: block; width: 100%; padding: 15px; border-radius: 8px; text-align: center; text-decoration: none; font-weight: bold; margin-bottom: 15px; transition: all 0.3s; border: none; cursor: pointer; font-size: 16px; }
+        .btn-whatsapp { background: #25d366; color: #fff; }
+        .btn-whatsapp:hover { background: #128c7e; }
+        .btn-phone { background: #007bff; color: #fff; }
+        .btn-phone:hover { background: #0056b3; }
+        .btn-gold { background: transparent; border: 2px solid #d4af37; color: #d4af37; }
+        .btn-gold:hover { background: #d4af37; color: #000; }
+        .note { text-align: center; color: #666; font-size: 12px; margin-top: 10px; }
+        .review-item { background: #0a0a0a; padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 3px solid #d4af37; }
+        .review-item p { color: #ccc; font-style: italic; margin-bottom: 10px; }
+        .review-item .author { color: #d4af37; font-weight: bold; font-size: 14px; }
+        .review-item .date { color: #666; font-size: 12px; float: right; }
+        .review-form { margin-top: 30px; padding-top: 30px; border-top: 1px solid #333; }
+        .review-form h3 { color: #fff; margin-bottom: 15px; font-size: 16px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; background: #0a0a0a; border: 1px solid #333; border-radius: 5px; color: #fff; font-family: inherit; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #d4af37; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #d4af37; color: #000; padding: 15px 30px; border-radius: 5px; font-weight: bold; transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 3000; }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } .nav-links { display: none; } .mobile-menu-btn { display: block; } }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="antialiased min-h-screen flex flex-col">
+<body>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-panel top-0">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <a href="index.html" class="flex-shrink-0 group">
-                    <h1 class="font-serif text-2xl md:text-3xl text-brand-gold tracking-wider group-hover:text-white transition-colors duration-300">
-                        SUXY <span class="text-white text-sm md:text-base font-sans tracking-widest uppercase block md:inline md:ml-2 opacity-80">Retail World</span>
-                    </h1>
-                </a>
-                
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="index.html" class="text-gray-300 hover:text-brand-gold px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
-                        <a href="order.html" class="text-gray-300 hover:text-brand-gold px-3 py-2 rounded-md text-sm font-medium transition-colors">Order</a>
-                        <a href="purchase.html" class="text-white px-3 py-2 rounded-md text-sm font-medium transition-colors border-b-2 border-brand-gold">Purchase</a>
-                    </div>
-                </div>
-
-                <div class="-mr-2 flex md:hidden">
-                    <button onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
+<nav>
+    <div class="container nav-flex">
+        <a href="index.html" class="logo">SUXY<span>Retail World</span></a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="order.html">Order</a>
+            <a href="purchase.html" class="active">Purchase</a>
         </div>
-        
-        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-white/10">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="index.html" class="text-gray-300 hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium w-full text-left">Home</a>
-                <a href="order.html" class="text-gray-300 hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium w-full text-left">Order</a>
-                <a href="purchase.html" class="text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left border-l-2 border-brand-gold">Purchase</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="flex-grow pt-24 pb-12 px-4 max-w-6xl mx-auto w-full">
-        <h2 class="text-3xl font-serif text-white mb-8 text-center">Review & Complete Purchase</h2>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Left: Order Summary -->
-            <div class="space-y-6">
-                <div class="bg-[#1a1a1a] border border-gray-800 rounded-lg p-6">
-                    <h3 class="text-xl text-brand-gold mb-4 border-b border-gray-800 pb-2">Selected Items</h3>
-                    <div id="cart-items" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
-                        <!-- Cart items injected here -->
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center text-xl font-bold text-white">
-                        <span>Total</span>
-                        <span id="total-price" class="text-brand-gold">₦0</span>
-                    </div>
-                </div>
-
-                <!-- Actions -->
-                <div class="bg-[#1a1a1a] border border-gray-800 rounded-lg p-6">
-                    <h3 class="text-lg text-white mb-4">Contact to Complete Order</h3>
-                    <a id="wa-link" href="#" target="_blank" class="block w-full bg-green-600 hover:bg-green-500 text-white text-center py-4 rounded-md font-bold mb-3 transition-colors flex items-center justify-center gap-3 text-lg">
-                        <i class="fab fa-whatsapp text-2xl"></i> Purchase via WhatsApp
-                    </a>
-                    <a href="tel:+2347012305403" class="block w-full bg-blue-600 hover:bg-blue-500 text-white text-center py-3 rounded-md font-bold transition-colors flex items-center justify-center gap-2">
-                        <i class="fas fa-phone"></i> Call Now
-                    </a>
-                    <p class="text-xs text-gray-500 mt-3 text-center">Pickup: Ekpoma/Benin | Waybill: Lagos</p>
-                </div>
-            </div>
-
-            <!-- Right: Reviews -->
-            <div class="space-y-6">
-                <div class="bg-[#1a1a1a] border border-gray-800 rounded-lg p-6 h-full">
-                    <h3 class="text-xl text-brand-gold mb-4">Customer Reviews</h3>
-                    <div id="reviews-list" class="space-y-4 mb-6 max-h-[300px] overflow-y-auto pr-2">
-                        <!-- Reviews injected here -->
-                    </div>
-                    
-                    <div class="border-t border-gray-800 pt-4 mt-4">
-                        <h4 class="text-sm text-white mb-3">Leave a Review</h4>
-                        <form id="review-form" onsubmit="submitReview(event)" class="space-y-3">
-                            <input type="text" id="review-name" placeholder="Your Name" class="w-full bg-black border border-gray-700 rounded p-2 text-white text-sm focus:border-brand-gold outline-none" required>
-                            <textarea id="review-text" placeholder="Share your experience..." rows="3" class="w-full bg-black border border-gray-700 rounded p-2 text-white text-sm focus:border-brand-gold outline-none" required></textarea>
-                            <button type="submit" class="w-full border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-black py-2 rounded text-sm transition-colors font-bold">
-                                Submit Review
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-black border-t border-white/10 py-8 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="font-serif text-brand-gold text-xl mb-2">SUXY Retail World</p>
-            <div class="flex justify-center space-x-6 mt-4">
-                <a href="https://wa.me/2347012305403" target="_blank" class="text-gray-400 hover:text-green-500 transition-colors"><i class="fab fa-whatsapp text-2xl"></i></a>
-                <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors"><i class="fab fa-tiktok text-2xl"></i></a>
-                <a href="tel:+2347012305403" class="text-gray-400 hover:text-blue-500 transition-colors"><i class="fas fa-phone text-2xl"></i></a>
-            </div>
-            <p class="text-gray-600 text-xs mt-6">&copy; 2026 SUXY Retail World.</p>
-        </div>
-    </footer>
-
-    <!-- Toast -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-brand-gold text-black px-6 py-3 rounded shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-[80] font-bold">
-        Notification
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
     </div>
+    <div id="mobileMenu" style="display: none; padding: 20px; background: #1a1a1a;">
+        <a href="index.html" style="display: block; color: #ccc; padding: 10px 0;">Home</a>
+        <a href="order.html" style="display: block; color: #ccc; padding: 10px 0;">Order</a>
+        <a href="purchase.html" style="display: block; color: #d4af37; padding: 10px 0;">Purchase</a>
+    </div>
+</nav>
 
-    <script>
-        // Firebase Init
-        const firebaseConfig = {
-            apiKey: "AIzaSyAOoMeyH1QKMNhJ6ICfeLo2kEFeeYTEFcg",
-            authDomain: "suxyretailworld.firebaseapp.com",
-            projectId: "suxyretailworld",
-            storageBucket: "suxyretailworld.firebasestorage.app",
-            messagingSenderId: "615863570909",
-            appId: "1:615863570909:web:79f66a04ec60c9845b2634"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        let cart = [];
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadCart();
-            loadReviews();
-            
-            // Listen for reviews update
-            db.collection('reviews').orderBy('timestamp', 'desc').onSnapshot(() => loadReviews());
-        });
-
-        function loadCart() {
-            cart = JSON.parse(localStorage.getItem('suxy_cart')) || [];
-            renderCart();
-        }
-
-        function renderCart() {
-            const container = document.getElementById('cart-items');
-            const totalEl = document.getElementById('total-price');
-            const waLink = document.getElementById('wa-link');
-            
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 border border-dashed border-gray-700 rounded-lg">
-                        <p class="text-gray-400 mb-2">Your cart is empty.</p>
-                        <a href="order.html" class="text-brand-gold hover:underline text-sm">Browse Items</a>
-                    </div>`;
-                totalEl.textContent = '₦0';
-                waLink.style.opacity = '0.5';
-                waLink.style.pointerEvents = 'none';
-                return;
-            }
-
-            waLink.style.opacity = '1';
-            waLink.style.pointerEvents = 'auto';
-
-            let total = 0;
-            let waMessage = "Hello SUXY Retail World,%0A%0AI want to buy:%0A";
-            
-            container.innerHTML = cart.map((item, idx) => {
-                total += Number(item.price);
-                waMessage += `${idx + 1}. ${item.name} (₦${item.price})%0A`;
-                return `
-                    <div class="flex items-center gap-4 bg-black/40 p-3 rounded border border-gray-800">
-                        <img src="${item.imageUrl}" class="w-16 h-16 object-cover rounded" alt="${item.name}">
-                        <div class="flex-grow">
-                            <h4 class="text-white font-serif text-sm">${item.name}</h4>
-                            <p class="text-brand-gold text-sm font-bold">₦${item.price}</p>
-                            <p class="text-gray-500 text-xs">${item.category}</p>
-                        </div>
-                        <button onclick="removeItem('${item.id}')" class="text-gray-500 hover:text-red-500 transition-colors">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-            }).join('');
-            
-            totalEl.textContent = '₦' + total;
-            waMessage += `%0ATotal: ₦${total}%0A%0APlease send payment details.`;
-            waLink.href = `https://wa.me/2347012305403?text=${waMessage}`;
-        }
-
-        function removeItem(id) {
-            cart = cart.filter(c => c.id !== id);
-            localStorage.setItem('suxy_cart', JSON.stringify(cart));
-            renderCart();
-            showToast('Item removed');
-        }
-
-        async function loadReviews() {
-            const snapshot = await db.collection('reviews').orderBy('timestamp', 'desc').get();
-            const reviews = snapshot.docs.map(doc => doc.data());
-            
-            const list = document.getElementById('reviews-list');
-            if (reviews.length === 0) {
-                list.innerHTML = '<p class="text-gray-500 italic text-sm">No reviews yet. Be the first!</p>';
-                return;
-            }
-            
-            list.innerHTML = reviews.map(r => `
-                <div class="bg-black/30 p-3 rounded border-l-2 border-brand-gold">
-                    <p class="text-gray-300 text-sm italic">"${r.text}"</p>
-                    <div class="flex justify-between items-center mt-2">
-                        <span class="text-xs text-brand-gold font-bold">- ${r.name}</span>
-                        <span class="text-[10px] text-gray-600">${r.timestamp ? new Date(r.timestamp.toDate()).toLocaleDateString() : ''}</span>
-                    </div>
+<main class="container">
+    <h1 class="page-title">Review & Complete Purchase</h1>
+    
+    <div class="two-col">
+        <div>
+            <div class="box">
+                <h2>Selected Items</h2>
+                <div id="cartItems"></div>
+                <div class="total-row" id="totalRow" style="display: none;">
+                    <span>Total</span>
+                    <span id="totalPrice">₦0</span>
                 </div>
-            `).join('');
-        }
-
-        async function submitReview(e) {
-            e.preventDefault();
-            const name = document.getElementById('review-name').value;
-            const text = document.getElementById('review-text').value;
+            </div>
             
-            try {
-                await db.collection('reviews').add({
-                    name,
-                    text,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                showToast('Review submitted!');
-                document.getElementById('review-form').reset();
-            } catch (err) {
-                console.error(err);
-                showToast('Error submitting review');
-            }
-        }
+            <div class="box" style="margin-top: 20px;">
+                <h2>Complete Order</h2>
+                <a id="waLink" href="#" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Purchase via WhatsApp</a>
+                <a href="tel:+2347012305403" class="btn btn-phone"><i class="fas fa-phone"></i> Call Now</a>
+                <p class="note">Pickup: Ekpoma/Benin | Waybill: Lagos</p>
+            </div>
+        </div>
+        
+        <div>
+            <div class="box">
+                <h2>Customer Reviews</h2>
+                <div id="reviewsList" style="max-height: 300px; overflow-y: auto; padding-right: 10px;"></div>
+                
+                <div class="review-form">
+                    <h3>Leave a Review</h3>
+                    <form onsubmit="submitReview(event)">
+                        <div class="form-group">
+                            <input type="text" id="reviewName" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="reviewText" rows="3" placeholder="Share your experience..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-gold">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
-        function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+<div id="toast" class="toast">Notification</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+<script>
+const _0xf1=["\x41\x49\x7a\x61\x53\x79\x41\x4f\x6f\x4d\x65\x79\x48\x31\x51\x4b\x4d\x4e\x68\x4a\x36\x49\x43\x66\x65\x4c\x6f\x32\x6b\x45\x46\x65\x65\x59\x54\x45\x46\x63\x67","\x73\x75\x78\x79\x72\x65\x74\x61\x69\x6c\x77\x6f\x72\x6c\x64\x2e\x66\x69\x72\x65\x62\x61\x73\x65\x61\x70\x70\x2e\x63\x6f\x6d","\x73\x75\x78\x79\x72\x65\x74\x61\x69\x6c\x77\x6f\x72\x6c\x64","\x73\x75\x78\x79\x72\x65\x74\x61\x69\x6c\x77\x6f\x72\x6c\x64\x2e\x66\x69\x72\x65\x62\x61\x73\x65\x73\x74\x6f\x72\x61\x67\x65\x2e\x61\x70\x70","\x36\x31\x35\x38\x36\x33\x35\x37\x30\x39\x30\x39","\x31\x3a\x36\x31\x35\x38\x36\x33\x35\x37\x30\x39\x30\x39\x3a\x77\x65\x62\x3a\x37\x39\x66\x36\x36\x61\x30\x34\x65\x63\x36\x30\x63\x39\x38\x34\x35\x62\x32\x36\x33\x34"];
+const firebaseConfig={apiKey:_0xf1[0],authDomain:_0xf1[1],projectId:_0xf1[2],storageBucket:_0xf1[3],messagingSenderId:_0xf1[4],appId:_0xf1[5]};
+
+let db;
+let cart = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadCart();
+    
+    try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        loadReviews();
+        db.collection('reviews').orderBy('timestamp', 'desc').onSnapshot(() => loadReviews());
+    } catch (e) {
+        console.error('Firebase error:', e);
+    }
+});
+
+function loadCart() {
+    cart = JSON.parse(localStorage.getItem('suxy_cart')) || [];
+    renderCart();
+}
+
+function renderCart() {
+    const container = document.getElementById('cartItems');
+    const totalRow = document.getElementById('totalRow');
+    const totalPrice = document.getElementById('totalPrice');
+    const waLink = document.getElementById('waLink');
+    
+    if (cart.length === 0) {
+        container.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-bag" style="font-size: 48px; color: #333; margin-bottom: 15px;"></i><p>Your cart is empty</p><a href="order.html" style="color: #d4af37; text-decoration: none;">Browse items</a></div>';
+        totalRow.style.display = 'none';
+        waLink.style.opacity = '0.5';
+        waLink.style.pointerEvents = 'none';
+        return;
+    }
+    
+    waLink.style.opacity = '1';
+    waLink.style.pointerEvents = 'auto';
+    
+    let total = 0;
+    let message = "Hello SUXY Retail World,%0A%0AI want to buy:%0A";
+    
+    container.innerHTML = cart.map((item, idx) => {
+        total += Number(item.price);
+        message += `${idx + 1}. ${item.name} - ₦${item.price}%0A`;
+        return `
+            <div class="cart-item">
+                <img src="${item.imageUrl}" alt="${item.name}">
+                <div class="info">
+                    <h4>${item.name}</h4>
+                    <p class="price">₦${item.price}</p>
+                    <p class="cat">${item.category}</p>
+                </div>
+                <button onclick="removeItem('${item.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+        `;
+    }).join('');
+    
+    totalPrice.textContent = '₦' + total.toLocaleString();
+    totalRow.style.display = 'flex';
+    
+    message += `%0ATotal: ₦${total}%0A%0APlease send payment details.`;
+    waLink.href = `https://wa.me/2347012305403?text=${message}`;
+}
+
+function removeItem(id) {
+    cart = cart.filter(c => c.id !== id);
+    localStorage.setItem('suxy_cart', JSON.stringify(cart));
+    loadCart();
+    showToast('Item removed');
+}
+
+async function loadReviews() {
+    if (!db) return;
+    try {
+        const snapshot = await db.collection('reviews').orderBy('timestamp', 'desc').get();
+        const reviews = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        const container = document.getElementById('reviewsList');
+        if (reviews.length === 0) {
+            container.innerHTML = '<p style="color: #666; font-style: italic;">No reviews yet. Be the first!</p>';
+            return;
         }
         
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.textContent = msg;
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
-        }
-    </script>
+        container.innerHTML = reviews.map(r => `
+            <div class="review-item">
+                <p>"${r.text}"</p>
+                <span class="date">${r.timestamp ? new Date(r.timestamp.toDate()).toLocaleDateString() : ''}</span>
+                <span class="author">- ${r.name}</span>
+            </div>
+        `).join('');
+    } catch (e) {
+        console.error('Reviews error:', e);
+    }
+}
+
+async function submitReview(e) {
+    e.preventDefault();
+    if (!db) {
+        showToast('Database not connected');
+        return;
+    }
+    
+    const name = document.getElementById('reviewName').value;
+    const text = document.getElementById('reviewText').value;
+    
+    try {
+        await db.collection('reviews').add({
+            name,
+            text,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        showToast('Review submitted!');
+        document.getElementById('reviewName').value = '';
+        document.getElementById('reviewText').value = '';
+        loadReviews();
+    } catch (err) {
+        showToast('Error submitting review');
+        console.error(err);
+    }
+}
+
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+</script>
+
 </body>
 </html>
